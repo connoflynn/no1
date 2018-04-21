@@ -1,0 +1,92 @@
+#include "stdafx.h"
+#include <stdio.h>
+#include <string.h>
+
+void charAddresses(char *string); 
+void commaToSpace(char *str); 
+void printWord(char *start); 
+char *nextWord(char *start); 
+
+
+void main()
+{
+	int i = 0;
+	char location[200] = "7825,CREEK VALLEY,SACRAMENTO,95828,CA";
+	char *ptr;
+
+	charAddresses(location);
+
+	commaToSpace(location);
+
+	puts("Without commas:");
+	puts(location);
+	puts("");
+
+	puts("First Word");
+	printWord(location);
+
+	puts("Second Word");
+	printWord(location + 5);
+
+	puts("Third Word");
+	printWord(location + 11);
+	puts("");
+
+	ptr = location;
+	while (ptr)
+	{
+		printWord(ptr);
+		printf("\n");
+		ptr = nextWord(ptr);
+	}
+
+
+}
+
+void charAddresses(char *string)
+{
+	int i;
+	printf("Address\t\t Character\n");
+
+	for (i = 0; *(string + i) != '\0'; i++)
+	{
+		printf("%p\t %c\n", string + i, *(string + i));
+	}
+	printf("\n\n");
+}
+void commaToSpace(char *str)
+{
+	int i;
+	for (i = 0; *(str + i) != '\0'; i++)
+	{
+		if (*(str + i) == ',')
+			*(str + i) = ' ';
+	}
+
+
+
+}
+
+void printWord(char *start)
+{
+	int i;
+	for (i = 0; *(start + i) != ' '; i++)
+	{
+		if (*(start + i) != '\0')
+			printf("%c", *(start + i));
+		else
+			break;
+	}
+	printf("\n");
+}
+
+char *nextWord(char *start)
+{
+	int i;
+	for (i = 0; *(start + i) != '\0'; i++)
+	{
+		if (*(start + i) == ' ')
+			return (start + i) + 1;
+	}
+	return NULL;
+}
