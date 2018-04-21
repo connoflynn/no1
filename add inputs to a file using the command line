@@ -1,0 +1,150 @@
+#include "stdafx.h"
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+
+enum month {Jan=1,Feb,Mar,Apr,May,June,July,Aug,Sept,Oct,Nov,Dec};
+void addMonth(int m);
+struct Date {
+	int day;
+	char month[15];
+	int year;
+};
+struct Time {
+	int hour;
+	int minute;
+};
+struct worktime
+{
+	int employeeID;
+	struct Date date;
+	struct Time startTime;
+	struct Time endTime;
+};
+struct worktime employees[100];
+struct worktime addEmployee;
+void main(int argc, char *argv[])
+{
+	char delimiter[4] = "/:,";
+	char *token;
+	char line[101];
+
+	FILE *fptr;
+	fptr = fopen(argv[1],"a");
+	if (fptr == NULL)
+	{
+		printf("Error opening file ! \n");
+	}
+
+	if (strcmp(argv[2], "/a") == 0) {
+		char *id = argv[3];
+		char *date = argv[4];
+		char *sTime = argv[5];
+		char *eTime = argv[6];
+
+		addEmployee.employeeID = atoi(id);
+
+		if ((token = strtok(date, delimiter)) != NULL) addEmployee.date.day = atoi(token);
+		if ((token = strtok(NULL, delimiter)) != NULL) addMonth(atoi(token));
+		if ((token = strtok(NULL, delimiter)) != NULL) addEmployee.date.year = atoi(token);
+
+		if ((token = strtok(sTime, delimiter)) != NULL) addEmployee.startTime.hour = atoi(token);
+		if ((token = strtok(NULL, delimiter)) != NULL) addEmployee.startTime.minute = atoi(token);
+
+		if ((token = strtok(eTime, delimiter)) != NULL) addEmployee.endTime.hour = atoi(token);
+		if ((token = strtok(NULL, delimiter)) != NULL) addEmployee.endTime.minute = atoi(token);
+
+		fprintf(fptr, "\"%s %d %d\",\"%d\",\"%d:%d\",\"%d:%d\"\n", addEmployee.date.month, addEmployee.date.day,  addEmployee.date.year, addEmployee.employeeID, addEmployee.startTime.hour, addEmployee.startTime.minute, addEmployee.endTime.hour, addEmployee.endTime.minute);
+	}
+	else if (strcmp(argv[2], "/p") == 0) {
+		fptr = fopen(argv[1], "r");
+		char delim[5] = "\",: ";
+		int j = 0;
+		while (!feof(fptr)) {
+			fgets(line, 100, fptr);
+			if ((token = strtok(line, delim)) != NULL) strcpy(employees[j].date.month, token);
+			if ((token = strtok(NULL, delim)) != NULL) employees[j].date.day = atoi(token);
+			if ((token = strtok(NULL, delim)) != NULL) employees[j].date.year = atoi(token);
+
+			if ((token = strtok(NULL, delim)) != NULL) employees[j].employeeID = atoi(token);
+
+			if ((token = strtok(NULL, delim)) != NULL) employees[j].startTime.hour = atoi(token);
+			if ((token = strtok(NULL, delim)) != NULL) employees[j].startTime.minute = atoi(token);
+
+			if ((token = strtok(NULL, delim)) != NULL) employees[j].endTime.hour = atoi(token);
+			if ((token = strtok(NULL, delim)) != NULL) employees[j].endTime.minute = atoi(token);
+			printf("Date: %d/%s/%d Employee: %d started at %d:%d and finished at %d:%d \n", employees[j].date.day, employees[j].date.month, employees[j].date.year, employees[j].employeeID, employees[j].startTime.hour, employees[j].startTime.minute, employees[j].endTime.hour, employees[j].endTime.minute);
+			j++;
+		}
+	}
+	else if (strcmp(argv[2], "/s") == 0) {
+		char *id = argv[3];
+		int eID = atoi(id);
+		int i = 0;
+		char delim[5] = "\",: ";
+		fptr = fopen(argv[1], "r");
+		while (!feof(fptr)) {
+			fgets(line, 100, fptr);
+
+			if ((token = strtok(line, delim)) != NULL) strcpy(employees[i].date.month, token);
+			if ((token = strtok(NULL, delim)) != NULL) employees[i].date.day = atoi(token);
+			if ((token = strtok(NULL, delim)) != NULL) employees[i].date.year = atoi(token);
+
+			if ((token = strtok(NULL, delim)) != NULL) employees[i].employeeID = atoi(token);
+
+			if ((token = strtok(NULL, delim)) != NULL) employees[i].startTime.hour = atoi(token);
+			if ((token = strtok(NULL, delim)) != NULL) employees[i].startTime.minute = atoi(token);
+
+			if ((token = strtok(NULL, delim)) != NULL) employees[i].endTime.hour = atoi(token);
+			if ((token = strtok(NULL, delim)) != NULL) employees[i].endTime.minute = atoi(token);
+			if (employees[i].employeeID == eID) break;
+			i++;
+		}
+		printf("Date: %d/%s/%d Employee: %d started at %d:%d and finished at %d:%d", employees[i].date.day, employees[i].date.month, employees[i].date.year, employees[i].employeeID, employees[i].startTime.hour, employees[i].startTime.minute, employees[i].endTime.hour, employees[i].endTime.minute);
+	}
+
+	fclose(fptr);
+} 
+
+	void addMonth(int m) {
+		switch (m)
+		{
+		case Jan:
+			strcpy(addEmployee.date.month, "January");
+			break;
+		case Feb:
+			strcpy(addEmployee.date.month, "Feburary");
+			break;
+		case Mar:
+			strcpy(addEmployee.date.month, "March");
+			break;
+		case Apr:
+			strcpy(addEmployee.date.month, "April");
+			break;
+		case May:
+			strcpy(addEmployee.date.month, "May");
+			break;
+		case June:
+			strcpy(addEmployee.date.month, "June");
+			break;
+		case July:
+			strcpy(addEmployee.date.month, "July");
+			break;
+		case Aug:
+			strcpy(addEmployee.date.month, "August");
+			break;
+		case Sept:
+			strcpy(addEmployee.date.month, "September");
+			break;
+		case Oct:
+			strcpy(addEmployee.date.month, "October");
+			break;
+		case Nov:
+			strcpy(addEmployee.date.month, "November");
+			break;
+		case Dec:
+			strcpy(addEmployee.date.month, "December");
+			break;
+
+		}
+}
